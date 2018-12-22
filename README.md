@@ -26,11 +26,17 @@ It is free and open source. :clap: :tada:
 
 ## The Team
 
+
+<div align="center">
 <img src="doc/images/ggj14_1.jpg" />
 
-* Mustafa Anıl Tuncel
-* Emre Tuner
-* Batuhan Erol
-* Doğucan Solak
-* Yiğit Çakar
+<ul>
+  <li>Mustafa Anıl Tuncel</li>
+  <li>Emre Tuner</li>
+  <li>Batuhan Erol</li>
+  <li>Doğucan Solak</li>
+  <li>Yiğit Çakar</li>
+</ul>  
+
+</div>
 
