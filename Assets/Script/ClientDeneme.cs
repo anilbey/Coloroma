@@ -1,11 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using TCPHandler.ClientSide;
 
 public class ClientDeneme : MonoBehaviour
 {
-	private Client client;
 	private User me;
 	private Dictionary<long, User> users;
 	private Dictionary<long, User> notInitiated;
@@ -15,17 +13,6 @@ public class ClientDeneme : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		client = new Client("192.168.1.6", 1234);
-		if (client.Connect())
-		{
-			print("Connected");
-			client.SendMessage("0&mindfog" + this.gameObject.name);
-		}
-		else
-			print("FAIL");
-		
-		client.NewAction += client_NewAction;
-		
 		users = new Dictionary<long, User>();
 		notInitiated = new Dictionary<long, User>();
 		usersToBeDeleted = new Dictionary<long, User> ();        
@@ -34,7 +21,6 @@ public class ClientDeneme : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		SendPositionRotation();  
 		if (notInitiated.Count > 0)
 		{
 			List<long> keyToDel = new List<long>();
@@ -108,50 +94,7 @@ public class ClientDeneme : MonoBehaviour
 	
 	void OnApplicationQuit()
 	{
-		this.client.Disconnect();
-	}
-	
-	void client_NewAction(TCPHandler.ClientEvents e)
-	{
-		string[] parameters = DecodeMessage(e.Message);
-		
-		if (parameters == null)
-		{            
-			return;
-		}
-		
-		switch (parameters[0])
-		{
-		case "0":
-			// New user login                
-			NewUserLogin(long.Parse(parameters[1]), parameters[2]);
-			break;
-		case "1":
-			
-			break;
-		case "2":
-			//print(parameters[2]);
-			SetPosRot(long.Parse(parameters[1]), parameters[2], parameters[3], parameters[4], parameters[5]);
-			break;
-		case "3":
-			// Set layer
-			SetLayer(long.Parse(parameters[1]), int.Parse(parameters[2]));
-			break;
-		case "4":
-			// Fire
-			PlayerFired(long.Parse(parameters[1]), parameters[2], parameters[3], parameters[4]);
-			break;
-		case "5":
-			// This player got shot
-			// parameters[1] = Vuran kisinin idsi
-			// parameters[2] = dmg
-			GotShot(long.Parse(parameters[1]), float.Parse(parameters[2]));
-			break;
-		case "99":
-			// Someone left
-			UserLeft(long.Parse(parameters[1]));
-			break;
-		}
+		// pass
 	}
 	
 	private void GotShot(long id, float dmg)
@@ -182,15 +125,7 @@ public class ClientDeneme : MonoBehaviour
 				print (u.Value.Layer);
 			}
 		}
-		
-		if (id != -1)
-			client.SendMessage("5&" + id.ToString() + "&" + dmg.ToString());
-	}
-	
-	public void Fire(Vector3 startPoint, Vector3 direction, float damage)
-	{
-		client.SendMessage("4&" + startPoint.x.ToString() + "," + startPoint.y.ToString() + "," + startPoint.z.ToString() + "&" +
-		                   direction.x.ToString() + "," + direction.y.ToString() + "," + direction.z.ToString() + "&" + damage.ToString());
+
 	}
 	
 	private void FireOther(User u)
@@ -223,18 +158,7 @@ public class ClientDeneme : MonoBehaviour
 			users[id].FireProjectile.Fired = true;
 		}
 	}
-	
-	private void SendPositionRotation()
-	{
-		//print("send " + this.gameObject.name);
-		string strPos = this.transform.position.x.ToString() + ',' + this.transform.position.y.ToString() + ',' + this.transform.position.z.ToString();
-		string strRot = this.transform.rotation.eulerAngles.x.ToString() + ',' + this.transform.rotation.eulerAngles.y.ToString() + ',' + this.transform.rotation.eulerAngles.z.ToString();
-		string strCam = "0,0,0";
-		string anim = "0";
-		// ANIMATION?
-		client.SendMessage("2&" + strPos + "&" + strRot + "&" + strCam + "&" + anim);
-	}
-	
+
 	private void SetPosRot(long id, string strPos, string strRot, string strCam, string anim)
 	{
 		string[] c = strCam.Split(',');
@@ -258,11 +182,6 @@ public class ClientDeneme : MonoBehaviour
 		}
 	}
 
-	public void SendLayer()
-	{
-		client.SendMessage ("3&" + ColorBars.circularDummy.ToString());
-	}
-	
 	private string[] DecodeMessage(string msg)
 	{
 		try

@@ -5,7 +5,6 @@ public class ColorBars : MonoBehaviour {
 	
 	
 	public GameObject fadeSmoke;
-	public Transform spawnPoint;
 	
 	public static int circularDummy = 0;
 	
@@ -92,45 +91,28 @@ public class ColorBars : MonoBehaviour {
 			circularDummy %= 3;
 
 			switchTime = (float) Time.realtimeSinceStartup;
-			
-			this.gameObject.GetComponent<ClientDeneme>().SendLayer();
-			Instantiate(fadeSmoke,spawnPoint.position,Quaternion.identity);
-			//			assignColors();
-			//			Debug.Log(circularDummy.ToString());
 		}
 		else if (Input.GetAxis("Mouse ScrollWheel") < 0 && (float) Time.realtimeSinceStartup - switchTime > 1.5) // forward
 		{
 			++circularDummy;
 			circularDummy %= 3;
-
 			switchTime = (float) Time.realtimeSinceStartup;
-			//			this.gameObject.GetComponent<ClientDeneme>().SendLayer();assignColors();
-			this.gameObject.GetComponent<ClientDeneme>().SendLayer();
-			Instantiate(fadeSmoke,spawnPoint.position,Quaternion.identity);
-			
-			//			Debug.Log(circularDummy.ToString());
-			
+
 		}
 		else if(Input.GetKey(KeyCode.Alpha1) && (float) Time.realtimeSinceStartup - switchTime > 1.5)
 		{	circularDummy = 0;
 
 			switchTime = (float) Time.realtimeSinceStartup;
-			this.gameObject.GetComponent<ClientDeneme>().SendLayer();
-			Instantiate(fadeSmoke,spawnPoint.position,Quaternion.identity);
 		}
 		else if(Input.GetKey(KeyCode.Alpha2) && (float) Time.realtimeSinceStartup - switchTime > 1.5){
 			circularDummy = 1;
 
 			switchTime = (float) Time.realtimeSinceStartup;
-//			this.gameObject.GetComponent<ClientDeneme>().SendLayer();
-			Instantiate(fadeSmoke,spawnPoint.position,Quaternion.identity);
 		}
 		else if(Input.GetKey(KeyCode.Alpha3) && (float) Time.realtimeSinceStartup - switchTime > 1.5){
 			circularDummy = 2;
 
 			switchTime = (float) Time.realtimeSinceStartup;
-			this.gameObject.GetComponent<ClientDeneme>().SendLayer();
-			Instantiate(fadeSmoke,spawnPoint.position,Quaternion.identity);
 		}
 		assignColors();
 		
@@ -165,11 +147,8 @@ public class ColorBars : MonoBehaviour {
 			pointBlue = point;
 			pointRed = null;
 			pointGreen = null;
-			
 		}
 		
 	}
-	
-	
-	
+
 }

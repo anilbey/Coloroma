@@ -57,7 +57,6 @@ public class ShootControl : MonoBehaviour {
 					}
 					BulletDirection = hit.point - TrailStart.position;
 				}
-				this.GetComponent<ClientDeneme>().Fire(TrailStart.position,BulletDirection,RailCharge);
 				CurrentTrail.GetComponent<Rigidbody>().AddForce(BulletDirection * 1000, ForceMode.Acceleration);
 				RailCharge = 0;
 			}
@@ -144,10 +143,5 @@ public class ShootControl : MonoBehaviour {
 		CurrentTrail = Instantiate(trail,startPoint,Quaternion.identity) as GameObject;
 		CurrentTrail.GetComponent<Rigidbody>().AddForce(direction * 1000, ForceMode.Acceleration);
 	}
-
-//	void OnCollisionStay (Collision col)
-//	{
-//		if (IsAnotherPlayer && col.collider.gameObject.tag == "Ground")
-//			isTouchedToGround = true;
-//	}
+		
 }
